@@ -81,10 +81,6 @@ export const ArticleParamsForm = () => {
 		currentArticleState.backgroundColor = selectedBackground;
 		currentArticleState.contentWidth = selectedContentWidth;
 
-		console.log('Selected background:', selectedBackground);
-		console.log('Background value:', selectedBackground.value);
-		console.log('Background className:', selectedBackground.className);
-
 		document.documentElement.style.setProperty(
 			'--font-family',
 			currentArticleState.fontFamilyOption.value
