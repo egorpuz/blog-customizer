@@ -6,6 +6,7 @@ import { Button } from 'src/ui/button';
 import { Select } from '../../ui/select/Select';
 import { RadioGroup } from '../../ui/radio-group/RadioGroup';
 import { Separator } from '../../ui/separator/Separator';
+import { useOutsideClickClose } from '../../ui/select/hooks/useOutsideClickClose';
 
 import {
 	fontFamilyOptions,
@@ -21,7 +22,7 @@ import {
 import styles from './ArticleParamsForm.module.scss';
 
 export const ArticleParamsForm = () => {
-	const [isOpen, setIsOpen] = useState(false);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 	const [selectedFontFamily, setSelectedFontFamily] = useState<OptionType>(
 		fontFamilyOptions[0]
@@ -39,10 +40,11 @@ export const ArticleParamsForm = () => {
 		contentWidthArr[0]
 	);
 
-	const aside = useRef<null | HTMLElement>(null);
+	const aside = useRef<HTMLDivElement | null>(null);
+	const arrowButton = useRef<HTMLDivElement | null>(null);
 
 	const openModal = () => {
-		setIsOpen(!isOpen);
+		setIsMenuOpen(!isMenuOpen);
 	};
 
 	const handleReset = () => {
@@ -103,12 +105,23 @@ export const ArticleParamsForm = () => {
 		);
 	};
 
+	useOutsideClickClose({
+		isOpen: isMenuOpen,
+		rootRef: aside,
+		ignoreRefs: [arrowButton],
+		onClose: () => setIsMenuOpen(false),
+		onChange: setIsMenuOpen,
+	});
+
 	return (
 		<>
-			<ArrowButton isOpen={isOpen} onClick={openModal} />
+			<ArrowButton isOpen={isMenuOpen} onClick={openModal} />
 			<aside
 				ref={aside}
-				className={cn(styles.container, isOpen ? styles.container_open : null)}>
+				className={cn(
+					styles.container,
+					isMenuOpen ? styles.container_open : null
+				)}>
 				<form className={styles.form}>
 					<Select
 						options={fontFamilyOptions}
