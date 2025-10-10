@@ -40,6 +40,7 @@ export const ArticleParamsForm = () => {
 		contentWidthArr[0]
 	);
 
+	const form = useRef<HTMLFormElement | null>(null);
 	const aside = useRef<HTMLDivElement | null>(null);
 	const arrowButton = useRef<HTMLDivElement | null>(null);
 
@@ -113,6 +114,11 @@ export const ArticleParamsForm = () => {
 		onChange: setIsMenuOpen,
 	});
 
+	form.current?.addEventListener('submit', (e) => {
+		e.preventDefault();
+		handleApply();
+	});
+
 	return (
 		<>
 			<ArrowButton isOpen={isMenuOpen} onClick={openModal} />
@@ -122,7 +128,7 @@ export const ArticleParamsForm = () => {
 					styles.container,
 					isMenuOpen ? styles.container_open : null
 				)}>
-				<form className={styles.form}>
+				<form className={styles.form} ref={form}>
 					<Select
 						options={fontFamilyOptions}
 						selected={selectedFontFamily}
@@ -167,12 +173,7 @@ export const ArticleParamsForm = () => {
 							type='clear'
 							onClick={handleReset}
 						/>
-						<Button
-							title='Применить'
-							htmlType='button'
-							type='apply'
-							onClick={handleApply}
-						/>
+						<Button title='Применить' htmlType='submit' type='apply' />
 					</div>
 				</form>
 			</aside>
